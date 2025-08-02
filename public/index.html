@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>random chaaaat</title>
+    <style>
+        main {
+            height: 100%;
+            width: 100%;
+            background: rgb(165, 165, 165);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <button id="emparejar">Emparejar</button>
+        <p id="room">Sala: </p>
+        <p id="chatInfo">Estas hablando con: </p>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module">
+        import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+
+        const pair = document.getElementById("emparejar")
+        const roomInfo = document.getElementById("room");
+        const userToChatt = document.getElementById("chatInfo");
+
+        const socket = io("ws://localhost:5000")
+
+        pair.addEventListener("click", () => socket.emit("pair"));
+
+        socket.on("waiting", () => {
+            userToChatt.textContent = "Standing by..."
+        })
+
+        socket.on("paired", ({ room, userToChat }) => {
+            roomInfo.textContent = `Sala: ${room}`
+            userToChatt.textContent = `Estas hablando con: ${userToChat}`
+        })
+
+        /**
+         * 
+            socket.emit("pair");
+
+            socket.on("waiting", () => {
+                console.log("⏳ Esperando a otro usuario...");
+            });
+
+            socket.on("paired", ({ roomId, peerId }) => {
+                console.log("👥 Emparejado con:", peerId);
+                socket.emit("sendMessage", { roomId, text: "¡Hola!" });
+            });
+
+            socket.on("receiveMessage", ({ from, text }) => {
+                console.log("💬 Mensaje de", from, ":", text);
+            });
+         * 
+         * */
+
+    </script>
+</body>
+
+</html>
