@@ -4,7 +4,6 @@ import dotenv from "dotenv"
 import http from "http";
 import path from "path";
 
-// routes
 import userRoutes from "./routes/user.routes";
 import { WebSocketServer } from "./lib/WebSocket/WebSocket";
 import { Print } from "./utils/General";
@@ -14,7 +13,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const ORIGINS = process.env.ORIGINS?.split(",") || [];
 
-//# Server
+// Server
 const app = express();
 const server = http.createServer(app);
 const webSocketServer = new WebSocketServer(server);
@@ -29,9 +28,11 @@ const CorsOptions = {
 
 webSocketServer.initialize();
 
+// Middleware
 app.use(cors(CorsOptions));
 app.use(express.json());
 
+// Routes
 app.use("/user", userRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
