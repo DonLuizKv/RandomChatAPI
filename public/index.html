@@ -16,51 +16,25 @@
 
 <body>
     <main>
-        <button id="emparejar">Emparejar</button>
-        <p id="room">Sala: </p>
-        <p id="chatInfo">Estas hablando con: </p>
+        <h1>Welcome to Random Chat</h1>
+
+        <p>my token: <span id="token"></span></p>
+        <button id="login">login</button>
+
     </main>
 
     <script src="/socket.io/socket.io.js"></script>
     <script type="module">
-        import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+        const login = document.getElementById('login');
+        const tokenSpan = document.getElementById('token');
 
-        const pair = document.getElementById("emparejar")
-        const roomInfo = document.getElementById("room");
-        const userToChatt = document.getElementById("chatInfo");
-
-        const socket = io("ws://localhost:5000")
-
-        pair.addEventListener("click", () => socket.emit("pair"));
-
-        socket.on("waiting", () => {
-            userToChatt.textContent = "Standing by..."
-        })
-
-        socket.on("paired", ({ room, userToChat }) => {
-            roomInfo.textContent = `Sala: ${room}`
-            userToChatt.textContent = `Estas hablando con: ${userToChat}`
-        })
-
-        /**
-         * 
-            socket.emit("pair");
-
-            socket.on("waiting", () => {
-                console.log("⏳ Esperando a otro usuario...");
-            });
-
-            socket.on("paired", ({ roomId, peerId }) => {
-                console.log("👥 Emparejado con:", peerId);
-                socket.emit("sendMessage", { roomId, text: "¡Hola!" });
-            });
-
-            socket.on("receiveMessage", ({ from, text }) => {
-                console.log("💬 Mensaje de", from, ":", text);
-            });
-         * 
-         * */
-
+        const auth = fetch('/auth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: 'user', password: 'pass' })
+        });
     </script>
 </body>
 

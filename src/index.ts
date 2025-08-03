@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv"
 import http from "http";
 import path from "path";
+import cookieParser from "cookie-parser";
 
 import userRoutes from "./routes/user.routes";
 import { WebSocketServer } from "./lib/WebSocket/WebSocket";
@@ -31,6 +32,7 @@ webSocketServer.initialize();
 // Middleware
 app.use(cors(CorsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use("/user", userRoutes);
