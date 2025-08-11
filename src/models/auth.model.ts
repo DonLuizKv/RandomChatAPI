@@ -1,17 +1,12 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2";
+import { RowDataPacket } from "mysql2";
 import Database from "../utils/Database";
 
 const ALLOWED_FIELDS = ['email', 'username', 'id'];
 
-const EXISTS = async (field: string, value: string) => {
-
-    if (!ALLOWED_FIELDS.includes(field)) {
-        throw new Error(`Field ${field} is not allowed`);
-    }
-
-    const query = `SELECT ${field} FROM users WHERE ${field} = ?`;
-    const [result] = await Database.query<ResultSetHeader>(query, [value]);
-    return result.affectedRows > 0;
+const GET_USER_CREDENTIALS = async (email: string) => {
+    const query = `SELECT ${ALLOWED_FIELDS.join(", ")} FROM users WHERE email = ? LIMIT 1`;
+    const [credentials] = await Database.query<RowDataPacket[]>(query, [email]);
+    return credentials[0] || null;
 };
 
 const TWO_FACTOR_AUTH = async (userId: number) => {
@@ -19,5 +14,6 @@ const TWO_FACTOR_AUTH = async (userId: number) => {
 };
 
 export const AuthModel = {
-    EXISTS,
-}
+    GET_USER_CREDENTIALS,
+    TWO_FACTOR_AUTH
+};

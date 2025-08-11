@@ -6,6 +6,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 
 import userRoutes from "./routes/user.routes";
+import authRoutes from "./routes/auth.routes";
 import { WebSocketServer } from "./lib/WebSocket/WebSocket";
 import { Print } from "./utils/General";
 
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
+app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));

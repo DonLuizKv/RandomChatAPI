@@ -18,3 +18,8 @@ const Register = async (req: Request, res: Response) => {
 
     }
 }
+
+export const AuthController = {
+    Login,
+    Register
+};

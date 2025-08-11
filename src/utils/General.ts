@@ -10,7 +10,6 @@ export const validateField = async (data: Record<string, string | number>, error
 
     if (fields.length === 0) return;
 
-    // Proteger el nombre de la tabla (nunca lo interpoles directo si proviene de entrada del usuario)
     const safeTable = table.replace(/[^a-zA-Z0-9_]/g, ""); // evitar SQL injection por nombre de tabla
 
     const whereClause = fields.map(field => `${field} = ?`).join(" OR ");

@@ -1,36 +1,27 @@
-import jwt from "jsonwebtoken";
 import { AuthModel } from "../models/auth.model";
-// import dotenv from "dotenv";
-// dotenv.config();
-
-// const SECRET: string = process.env.JWT_SECRET as string;
-// const EXPIRE: string = process.env.JWT_EXPIRATION || "12h";
+import { validateField } from "../utils/General";
 
 export const login = async (credentials: { email: string; password: string }) => {
-    // errores
     const errors = {
         email: "This email does not exist",
         password: "Invalid password",
     }
 
-    // validacion de errores
-    for (const field in credentials) {
-        const validateField = AuthModel.EXISTS(field, credentials[field as keyof typeof credentials]);
+    // validacion de datos
+    const db_credentials = await AuthModel.GET_USER_CREDENTIALS(credentials.email);
 
-        console.log(!validateField ? errors[field as keyof typeof errors] : null);
+    if (!db_credentials) {
+        throw new Error("This user doesnt exists.");
     }
 
-    // validacion de datos
+    for (const key of Object.keys(errors)) {
+        
+    }
 
     // creacion de token
 
     // fin
 }
-
-login({
-    email:"test@example.com",
-    password:"password123"
-});
 
 export const register = async (userData: { username: string; email: string; password: string }) => {
     // errores
