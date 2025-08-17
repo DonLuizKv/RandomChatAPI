@@ -9,3 +9,9 @@ export interface jwtUserToken {
 export interface AuthenticatedRequest extends Request {
     user?: jwtUserToken | jwt.JwtPayload;
 }
+
+export type TokenPayload = {
+    id: string;
+    username: string;
+    email: string;
+}

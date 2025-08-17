@@ -1,29 +1,50 @@
+import jwt from "jsonwebtoken";
 import { AuthModel } from "../models/auth.model";
-import { validateField } from "../utils/General";
+import { Compare, Hash, validateField } from "../utils/General";
+import { TokenPayload } from "../types/Auth";
+import dotenv from "dotenv";
 
-export const login = async (credentials: { email: string; password: string }) => {
-    const errors = {
-        email: "This email does not exist",
-        password: "Invalid password",
-    }
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_EXPIRES = process.env.JWT_EXPIRES as string;
+
+export const login_service = async (email: string, password: string) => {
 
     // validacion de datos
-    const db_credentials = await AuthModel.GET_USER_CREDENTIALS(credentials.email);
+    const db_credentials = await AuthModel.GET_USER_CREDENTIALS(email);
 
     if (!db_credentials) {
-        throw new Error("This user doesnt exists.");
+        throw new Error("This user doesnt exist.");
     }
 
-    for (const key of Object.keys(errors)) {
-        
+    const Match_Password = await Compare(password, db_credentials.password);
+
+    if (!Match_Password) {
+        throw new Error("Invalid password.");
     }
 
-    // creacion de token
+    // Creacion del token
+    const payload: TokenPayload = {
+        id: db_credentials.id,
+        username: db_credentials.username,
+        email: db_credentials.email
+    }
+
+    const token = jwt.sign(
+        payload,
+        JWT_SECRET,
+        { expiresIn: JWT_EXPIRES as jwt.SignOptions["expiresIn"] }
+    );
 
     // fin
+    return {
+        token,
+        user: payload
+    };
 }
 
-export const register = async (userData: { username: string; email: string; password: string }) => {
+export const register_service = async (userData: { username: string; email: string; password: string }) => {
     // errores
 
     // validacion de errores

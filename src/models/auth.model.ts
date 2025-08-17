@@ -4,7 +4,7 @@ import Database from "../utils/Database";
 const ALLOWED_FIELDS = ['email', 'username', 'id'];
 
 const GET_USER_CREDENTIALS = async (email: string) => {
-    const query = `SELECT ${ALLOWED_FIELDS.join(", ")} FROM users WHERE email = ? LIMIT 1`;
+    const query = `SELECT id, username, email, password FROM users WHERE email = ? LIMIT 1`;
     const [credentials] = await Database.query<RowDataPacket[]>(query, [email]);
     return credentials[0] || null;
 };

@@ -14,9 +14,6 @@ USE randomchat;
 --   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- INSERT INTO users (username, email, password) VALUES
--- ('alice', 'alice@example.com', 'password123'),
--- ('bob', 'bob@example.com', 'password456'),
--- ('charlie', 'charlie@example.com', 'password789');
+INSERT INTO users (username, email, password) VALUES
+('jausjuas', 'juasjuas@gmail.com', '$2b$10$Wdwms2mhwuElXQtROZ6RdOlTj8n.Wb13xFsSPh3aekI.dSr0bopn2');
 
-SELECT email, password FROM users WHERE email = 'alice@example.com' LIMIT 1;

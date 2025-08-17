@@ -17,7 +17,7 @@ const VERIFY = (req: AuthenticatedRequest, res: Response, next: NextFunction) =>
         const splitBearer = token.startsWith('Bearer ') ? token.slice(7) : token
         const decoded = jwt.verify(splitBearer, JWT_SECRET) as jwtUserToken;
 
-        req.user = decoded; // desestructuramos el token y lo enviamos como id y role
+        req.user = decoded;
         next();
     } catch (error) {
         return res.status(401).json({ error: 'Invalid Token or Expired' });

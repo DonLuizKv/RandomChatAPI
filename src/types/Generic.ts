@@ -5,3 +5,4 @@ export type StyleConfig = {
     italic?: boolean;
     underline?: boolean;
 };
+
