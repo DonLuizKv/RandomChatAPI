@@ -9,6 +9,7 @@ import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import { WebSocketServer } from "./lib/WebSocket/WebSocket";
 import { Print } from "./utils/General";
+import { Authenticate } from "./middlewares/auth.middleware";
 
 // env
 dotenv.config();
@@ -37,7 +38,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
+app.use("/user", Authenticate, userRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.get('/', (req, res) => {

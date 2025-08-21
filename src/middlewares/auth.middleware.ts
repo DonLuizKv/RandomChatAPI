@@ -6,7 +6,7 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-const VERIFY: RequestHandler = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const Authenticate: RequestHandler = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
 
     if (!token || typeof token !== 'string') {
@@ -25,6 +25,3 @@ const VERIFY: RequestHandler = (req: AuthenticatedRequest, res: Response, next: 
     }
 };
 
-export const AuthMiddleware = {
-    VERIFY,
-};

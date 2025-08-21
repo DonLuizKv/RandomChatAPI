@@ -3,6 +3,8 @@ import { Request } from "express";
 
 export interface jwtUserToken {
     id: string;
+    username: string;
+    email: string;
     role: string;
 }
 

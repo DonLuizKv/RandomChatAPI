@@ -40,7 +40,6 @@ export const login_service = async (email: string, password: string) => {
     // fin
     return {
         token,
-        user: payload
     };
 }
 
