@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
-const JWT_EXPIRES = process.env.JWT_EXPIRES as string;
+const JWT_EXPIRES_TIME = process.env.JWT_EXPIRES as jwt.SignOptions["expiresIn"];
 
 export const login_service = async (email: string, password: string) => {
 
@@ -34,7 +34,7 @@ export const login_service = async (email: string, password: string) => {
     const token = jwt.sign(
         payload,
         JWT_SECRET,
-        { expiresIn: JWT_EXPIRES as jwt.SignOptions["expiresIn"] }
+        { expiresIn: JWT_EXPIRES_TIME }
     );
 
     // fin

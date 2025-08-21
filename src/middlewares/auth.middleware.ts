@@ -1,4 +1,4 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, RequestHandler, Response } from "express";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { AuthenticatedRequest, jwtUserToken } from "../types/Auth";
@@ -6,11 +6,12 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-const VERIFY = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const VERIFY: RequestHandler = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
 
     if (!token || typeof token !== 'string') {
-        return res.status(403).json({ error: 'Token not found' });
+        res.status(403).json({ error: 'Token not found' });
+        return;
     }
 
     try {
@@ -20,7 +21,7 @@ const VERIFY = (req: AuthenticatedRequest, res: Response, next: NextFunction) =>
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(401).json({ error: 'Invalid Token or Expired' });
+        res.status(401).json({ error: 'Invalid Token or Expired' });
     }
 };
 

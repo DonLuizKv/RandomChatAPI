@@ -9,7 +9,7 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: Boolean(process.env.PRODUCTION),   // true cuando sea produccion
+            secure: Boolean(process.env.PRODUCTION),
             sameSite: "strict",
             maxAge: 1000 * 60 * 60 * 12, // 12 hora
         });
