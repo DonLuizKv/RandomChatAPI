@@ -1,47 +1,58 @@
 import { Server as HTTPServer } from 'http';
-import { Server, Socket } from 'socket.io';
-import { CreateID, Print } from '../../utils/General';
-import { RoomManager } from './Rooms';
+import { Server } from 'socket.io';
+import { Event } from './Events';
+
+export type UserSocket = {
+    userId: string;
+    socketId: string;
+};
 
 export class WebSocketServer {
-    private io: Server;
-    private RoomManager: RoomManager;
-    private ActiveUsers = new Map<string, string>();
+    protected io: Server;
+    protected ActiveUsers = new Map<string, string>();
 
     constructor(server: HTTPServer) {
         this.io = new Server(server, {
+            // solo WebSockets, nada de long polling
+            transports: ["websocket"],
+
+            // habilitar CORS según tu frontend
             cors: {
-                origin: '*',
-                methods: ["GET", "POST"]
+                origin: "*",
+                methods: ["GET", "POST"],
+                credentials: true,
             },
+
+            // tamaño máximo de mensaje (sube si mandas blobs/pdfs/etc.)
+            maxHttpBufferSize: 1e6, // 1 MB por defecto
         });
-        this.RoomManager = new RoomManager(this.io);
     }
 
-    public initialize() {
-        this.io.on('connection', (socket: Socket) => {
-            Print(`- Client Connected: ${socket.id}`, { color: 'yellow', bold: true });
+    initialize() {
+        this.io.on('connection', (socket) => {
+            console.log(`Client connected: ${socket.id}`);
 
-            socket.on("login", ({ userID }) => {
-                this.ActiveUsers.set(userID, socket.id);
-            })
+            socket.on('register', (userId) => {
+                this.ActiveUsers.set(userId, socket.id);
+                console.log(`User registered: ${userId}`);
+            });
 
-            socket.on("pair", () => {
-                this.RoomManager.Pair(socket);
-            })
+            const events = new Event(this.io, socket, this.getActiveUsers());
+            events.init();
 
             socket.on('disconnect', () => {
-                Print(`- Client Disconnected: ${socket.id}`, { color: 'red', bold: true });
-                this.ActiveUsers.forEach((socketID, userID) => {
-                    if (socketID === socket.id) {
-                        this.ActiveUsers.delete(userID)
+                this.ActiveUsers.forEach((value, key) => {
+                    if (value === socket.id) {
+                        this.ActiveUsers.delete(key);
+                        console.log(`User disconnected: ${key}`);
                     }
                 });
             });
-
-            socket.on('error', (error: Error) => {
-                Print(`- Error from client: ${error}`, { color: 'red', bold: true });
-            });
         });
     }
+
+    getActiveUsers(): UserSocket[] {
+        return Array.from(this.ActiveUsers.entries()).map(([userId, socketId]) => ({ userId, socketId }));
+    }
+
 }

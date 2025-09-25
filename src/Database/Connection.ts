@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 import dotenv from 'dotenv';
-import { Print } from "./General";
+import { Print } from "../utils/General";
 dotenv.config();
 
 const config = {

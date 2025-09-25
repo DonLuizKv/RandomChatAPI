@@ -4,7 +4,6 @@ import dotenv from "dotenv"
 import http from "http";
 import path from "path";
 import cookieParser from "cookie-parser";
-
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import { WebSocketServer } from "./lib/WebSocket/WebSocket";
@@ -21,6 +20,7 @@ const app = express();
 const server = http.createServer(app);
 const webSocketServer = new WebSocketServer(server);
 
+
 // configs
 const CorsOptions = {
     origin: ORIGINS,
@@ -29,6 +29,7 @@ const CorsOptions = {
     credentials: true
 };
 
+// Libs
 webSocketServer.initialize();
 
 // Middleware
