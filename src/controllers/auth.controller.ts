@@ -5,9 +5,10 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body
 
-        const { token } = await login_service(email, password);
+        // const { token } = 
+        await login_service(email, password);
 
-        res.cookie("token", token, {
+        res.cookie("token", "token", {
             httpOnly: true,
             secure: Boolean(process.env.PRODUCTION),
             sameSite: "strict",

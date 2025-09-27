@@ -1,24 +1,36 @@
-import { User } from "../types/User";
-import { CreateID, Hash, validateField } from "../utils/General";
 import { UserModel } from "../models/user.model";
+import { User } from "../types/User";
+import { CreateID } from "../utils/General";
+import { Hash } from "../utils/Password";
 
-export const create_user = async (data: Omit<User, "id">) => {
-    const errors = {
-        email: "This Email is already in use",
-    };
+export class UserService {
+    constructor(
+        private userModel: UserModel = new UserModel(),
+    ) { }
 
-    await validateField(data, errors, "users");
+    async Create(data: Omit<User, "id">) {
+        const errors = {
+            email: "This Email is already in use",
+        };
 
-    const id_user = CreateID("USR");
-    const HashedPassword = await Hash(data.password);
+        // await validateField(data, errors, "users");
 
-    const user: User = {
-        id: id_user,
-        email: data.email,
-        username: data.username,
-        password: HashedPassword,
-    };
+        const id_user = CreateID("USR");
+        const HashedPassword = await Hash(data.password);
 
-    await UserModel.CREATE(user);
+        const user: User = {
+            id: id_user,
+            email: data.email,
+            username: data.username,
+            password: HashedPassword,
+        };
 
+        await this.userModel.POST(user);
+    }
+
+    async Update() { }
+
+    async getUser() { }
+
+    async getAllUsers() { }
 };

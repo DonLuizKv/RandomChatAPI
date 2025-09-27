@@ -4,11 +4,12 @@ import dotenv from "dotenv"
 import http from "http";
 import path from "path";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/user.routes";
-import authRoutes from "./routes/auth.routes";
 import { WebSocketServer } from "./lib/WebSocket/WebSocket";
-import { Print } from "./utils/General";
+import authRoutes from "./routes/auth.routes";
 import { Authenticate } from "./middlewares/auth.middleware";
+import userRoutes from "./routes/user.routes";
+import Logger from "./lib/Logger/Logger";
+import { DBConnection } from "./Database/DBConnection";
 
 // env
 dotenv.config();
@@ -18,8 +19,8 @@ const ORIGINS = process.env.ORIGINS?.split(",") || [];
 // Server
 const app = express();
 const server = http.createServer(app);
+// const DataBase = DBConnection.getInstance();
 const webSocketServer = new WebSocketServer(server);
-
 
 // configs
 const CorsOptions = {
@@ -31,11 +32,14 @@ const CorsOptions = {
 
 // Libs
 webSocketServer.initialize();
+// DataBase.initialize();
 
 // Middleware
 app.use(cors(CorsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use(Logger.httpMiddleware())
+
 
 // Routes
 app.use("/auth", authRoutes);
@@ -47,5 +51,7 @@ app.get('/', (req, res) => {
 });
 
 server.listen(PORT, () => {
-    Print(`\n- Server is running on port ${PORT}`, { color: "cyan", bold: true, italic: true });
+    Logger.info(`Server is running on port ${PORT}`, {
+        prefix: "\n"
+    })
 });
