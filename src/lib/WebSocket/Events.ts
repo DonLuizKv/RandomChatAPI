@@ -2,11 +2,11 @@ import { Server, Socket } from "socket.io";
 import { UserSocket } from "./WebSocket";
 
 type Channel = "USER" | "MESSAGE" | "NOTIFICATION" | "CHATROOM" | "SYSTEM";
-type Action = "CREATE" | "UPDATE" | "DELETE" | "ACCEPT" | "CANCEL";
+// type Action = "CREATE" | "UPDATE" | "DELETE" | "ACCEPT" | "CANCEL";
 type Message = Record<string, string | number | boolean>;
+
 type Package = {
     type: "direct" | "broadcast";
-    action: Action;
     to: string | Channel[];
     message: Message;
 }
@@ -41,7 +41,9 @@ export class Event {
     }
 
     private ChatEvents() {
-        this.socket.on("CHAT:MESSAGE", (data: Package[]) => this.Dispatcher(data, "CHAT:MESSAGE"));
+        this.socket.on("chat:message", (data: Package[]) => this.Dispatcher(data, "chat:message"));
+        this.socket.on("chat:message:send", (data: Package[]) => this.Dispatcher(data, "chat:message"));
+        this.socket.on("chat:message:send", (data: Package[]) => this.Dispatcher(data, "chat:message"));
     }
 
     init() {

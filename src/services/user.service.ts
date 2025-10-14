@@ -8,12 +8,8 @@ export class UserService {
         private userModel: UserModel = new UserModel(),
     ) { }
 
-    async Create(data: Omit<User, "id">) {
-        const errors = {
-            email: "This Email is already in use",
-        };
 
-        // await validateField(data, errors, "users");
+    async registerUser(data: Omit<User, "id">) {
 
         const id_user = CreateID("USR");
         const HashedPassword = await Hash(data.password);
@@ -25,12 +21,12 @@ export class UserService {
             password: HashedPassword,
         };
 
-        await this.userModel.POST(user);
+        await this.userModel.Insert(user);
     }
 
-    async Update() { }
+    async update() { }
 
-    async getUser() { }
+    async UserById() { }
 
-    async getAllUsers() { }
+    async AllUsers() { }
 };

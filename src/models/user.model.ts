@@ -9,5 +9,4 @@ export class UserModel extends Model<user> {
         super("users")
     }
 
-    async GetAge() {}
 }

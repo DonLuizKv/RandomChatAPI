@@ -14,17 +14,16 @@ export class WebSocketServer {
     constructor(server: HTTPServer) {
         this.io = new Server(server, {
             // solo WebSockets, nada de long polling
-            transports: ["websocket"],
+            // transports: ["websocket"],
 
             // habilitar CORS según tu frontend
             cors: {
                 origin: "*",
                 methods: ["GET", "POST"],
-                credentials: true,
             },
 
             // tamaño máximo de mensaje (sube si mandas blobs/pdfs/etc.)
-            maxHttpBufferSize: 1e6, // 1 MB por defecto
+            // maxHttpBufferSize: 1e6, // 1 MB por defecto
         });
     }
 

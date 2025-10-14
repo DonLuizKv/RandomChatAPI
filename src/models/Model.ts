@@ -1,29 +1,34 @@
 import { DBConnection } from "../Database/DBConnection";
 
-interface interfaceModel<T> {
-    GET: (id: string) => Promise<T>;
-    GETALL: () => Promise<T[]>;
-    POST: (data: T) => void;
-    PUT: (id: string, data: T) => void;
-    DELETE: (id: string) => Promise<Boolean>;
+// interface interfaceModel<T> {
+//     get: (id: string) => Promise<T>;
+//     getAll: () => Promise<T[]>;
+//     create: (data: T) => void;
+//     update: (id: string, data: T) => void;
+//     delete: (id: string) => Promise<Boolean>;
+// }
+
+type findValue = {
+    where: string
+    value: string
 }
 
-export class Model<T> implements interfaceModel<T> {
+export class Model<T> {
     constructor(
-        protected table: string, // apuntar a la tabla por cada instancia
+        protected table: string,
         protected db: DBConnection = DBConnection.getInstance()
     ) { };
 
-    async GET(id: string): Promise<T> {
+    async Find(id: string): Promise<T> {
         const row = await this.db.query<T>(`SELECT * FROM ${this.table} WHERE id = ?`, [id]);
         return row[0];
     }
 
-    async GETALL(): Promise<T[]> {
+    async FindAll(): Promise<T[]> {
         return [];
     }
 
-    async POST(data: Partial<T>): Promise<void> {
+    async Insert(data: Partial<T>): Promise<void> {
         const keys = Object.keys(data);
         const values = Object.values(data);
 
@@ -34,9 +39,9 @@ export class Model<T> implements interfaceModel<T> {
         await this.db.query(query, values);
     }
 
-    async PUT(id: string, data: T): Promise<void> { }
+    async Update(id: string, data: T): Promise<void> { }
 
-    async DELETE(id: string): Promise<boolean> {
+    async Delete(id: string): Promise<boolean> {
         return true;
     }
 }
