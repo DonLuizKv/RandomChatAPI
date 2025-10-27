@@ -4,12 +4,11 @@ import dotenv from "dotenv"
 import http from "http";
 import path from "path";
 import cookieParser from "cookie-parser";
-import { WebSocketServer } from "./lib/WebSocket/WebSocket";
-import authRoutes from "./routes/auth.routes";
-import { Authenticate } from "./middlewares/auth.middleware";
-import userRoutes from "./routes/user.routes";
-import Logger from "./lib/Logger/Logger";
-import { DBConnection } from "./Database/DBConnection";
+import authRoutes from "./app/Presentation/http/routes/auth.routes";
+import { Authenticate } from "./app/Presentation/http/middlewares/auth.middleware";
+import userRoutes from "./app/Presentation/http/routes/user.routes";
+import Logger from "./lib/Logger";
+import { WebSocketServer } from "./infrastructure/WebSocketServer";
 
 // env
 dotenv.config();

@@ -1,4 +1,3 @@
-import { DBConnection } from "../Database/DBConnection";
 
 // interface interfaceModel<T> {
 //     get: (id: string) => Promise<T>;
@@ -8,15 +7,12 @@ import { DBConnection } from "../Database/DBConnection";
 //     delete: (id: string) => Promise<Boolean>;
 // }
 
-type findValue = {
-    where: string
-    value: string
-}
+import { Database } from "../../infrastructure/database";
 
 export class Model<T> {
     constructor(
         protected table: string,
-        protected db: DBConnection = DBConnection.getInstance()
+        protected db: Database = Database.getInstance()
     ) { };
 
     async Find(id: string): Promise<T> {

@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { UserSocket } from "./WebSocket";
+import { UserSocket } from "../infrastructure/WebSocketServer";
 
 type Channel = "USER" | "MESSAGE" | "NOTIFICATION" | "CHATROOM" | "SYSTEM";
 // type Action = "CREATE" | "UPDATE" | "DELETE" | "ACCEPT" | "CANCEL";

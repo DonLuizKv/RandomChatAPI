@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/user.service";
-import Logger from "../lib/Logger/Logger";
+import { UserService } from "../../../Business/services/user.service";
+import Logger from "../../../../lib/Logger";
 
 const service = new UserService();
 

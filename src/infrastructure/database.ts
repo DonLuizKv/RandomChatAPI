@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import { Pool } from "pg";
-import Logger from "../lib/Logger/Logger";
+import Logger from "../lib/Logger";
 
 dotenv.config();
 
-export class DBConnection {
-    private static instance: DBConnection;
+export class Database {
+    private static instance: Database;
     private pool: Pool;
 
     private constructor() {
@@ -25,9 +25,9 @@ export class DBConnection {
         // this.setupPoolEvents();
     }
 
-    public static getInstance(): DBConnection {
+    public static getInstance(): Database {
         if (!this.instance) {
-            this.instance = new DBConnection();
+            this.instance = new Database();
         }
         return this.instance;
     }
