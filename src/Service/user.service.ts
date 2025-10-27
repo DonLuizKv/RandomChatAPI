@@ -1,4 +1,4 @@
-import { UserModel } from "../Data/user.model";
+import { UserModel } from "../Data/models/user.model";
 import { User } from "../Domain/types/User";
 import { CreateID } from "../utils/General";
 import { Hash } from "../utils/Password";
