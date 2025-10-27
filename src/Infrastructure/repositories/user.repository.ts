@@ -8,5 +8,5 @@ export class UserRepository extends Repository<User> {
         super(UserTable.tableName)
     }
 
-    public async SetConfigs() {}
+    
 }
