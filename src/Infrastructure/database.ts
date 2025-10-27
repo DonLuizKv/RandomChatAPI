@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 import Logger from "../lib/Logger";
 
 dotenv.config();
@@ -46,7 +46,7 @@ export class Database {
     //     this.pool.on("connect", () => Logger.database("New client connected to pool"));
     // }
 
-    async query<T>(sql: string, params: any[] = []): Promise<T[]> {
+    async query(sql: string, params: any[] = []): Promise<QueryResult> {
         try {
             if (!sql || typeof sql !== "string") {
                 Logger.error("SQL query is required and must be a string", {
@@ -64,35 +64,43 @@ export class Database {
                 });
             }
 
-            const result = await this.pool.query(sql, params);
-            return result.rows;
-        } catch (error) {
-            Logger.error(error as Error);
-            throw error;
-        }
-    }
+            const { command, rowCount, oid, rows, fields } = await this.pool.query(sql, params)
 
-    async transaction(queries: { sql: string; params?: any[] }[]): Promise<any[]> {
-        const client = await this.pool.connect();
-        try {
-            await client.query("BEGIN");
-            const results = [];
-
-            for (const { sql, params = [] } of queries) {
-                const result = await client.query(sql, params);
-                results.push(result.rows);
+            return {
+                command,
+                rowCount,
+                oid,
+                rows,
+                fields,
             }
 
-            await client.query("COMMIT");
-            return results;
         } catch (error) {
-            await client.query("ROLLBACK");
             Logger.error(error as Error);
             throw error;
-        } finally {
-            client.release();
         }
     }
+
+    // async transaction(queries: { sql: string; params?: any[] }[]): Promise<any[]> {
+    //     const client = await this.pool.connect();
+    //     try {
+    //         await client.query("BEGIN");
+    //         const results = [];
+
+    //         for (const { sql, params = [] } of queries) {
+    //             const result = await client.query(sql, params);
+    //             results.push(result.rows);
+    //         }
+
+    //         await client.query("COMMIT");
+    //         return results;
+    //     } catch (error) {
+    //         await client.query("ROLLBACK");
+    //         Logger.error(error as Error);
+    //         throw error;
+    //     } finally {
+    //         client.release();
+    //     }
+    // }
 
     async initialize(): Promise<void> {
         try {
