@@ -8,7 +8,7 @@ import authRoutes from "./Presentation/http/routes/auth.routes";
 import { Authenticate } from "./Presentation/http/middlewares/auth.middleware";
 import userRoutes from "./Presentation/http/routes/user.routes";
 import Logger from "./lib/Logger";
-import { WebSocketServer } from "./Infra/WebSocketServer";
+import { WebSocketServer } from "./Infrastructure/WebSocketServer";
 
 // env
 dotenv.config();

@@ -1,6 +1,6 @@
 import { Server as HTTPServer } from 'http';
 import { Server } from 'socket.io';
-import { Event } from '../lib/Events';
+import { Event } from '../Presentation/websocket/Events';
 
 export type UserSocket = {
     userId: string;

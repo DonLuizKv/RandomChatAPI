@@ -1,6 +1,6 @@
 import multer from 'multer';
 import fs from 'fs';
-import cloudinary from '../../../Infra/cloudinary.js';
+import cloudinary from '../../../Infrastructure/cloudinary.js';
 import { NextFunction, Request, Response } from 'express';
 
 // Extender el tipo de Request para incluir cloudinaryData
