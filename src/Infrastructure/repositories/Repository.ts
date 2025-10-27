@@ -11,9 +11,9 @@ import { Database } from "../database";
 
 
 export abstract class Repository<T extends object> {
-    protected abstract table: string;
 
     constructor(
+        protected readonly table: string,
         protected readonly database = Database.getInstance()
     ) { }
 

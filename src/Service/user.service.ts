@@ -1,11 +1,12 @@
+import { User } from "../Domain/entities/User";
+import { UserRepository } from "../Infrastructure/repositories/user.repository";
 import { CreateID } from "../utils/General";
 import { Hash } from "../utils/Password";
 
 export class UserService {
     constructor(
-        private userModel: UserModel = new UserModel(),
+        private userRepo: UserRepository = new UserRepository(),
     ) { }
-
 
     async registerUser(data: Omit<User, "id">) {
 
@@ -19,7 +20,7 @@ export class UserService {
             password: HashedPassword,
         };
 
-        await this.userModel.Insert(user);
+        await this.userRepo.Insert(user);
     }
 
     async update() { }
