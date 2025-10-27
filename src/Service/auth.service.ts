@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { TokenPayload } from "../domain/types/Auth";
+import { TokenPayload } from "../Domain/types/Auth";
 import dotenv from "dotenv";
 import { Compare } from "../utils/Password";
 

@@ -7,7 +7,7 @@
 //     delete: (id: string) => Promise<Boolean>;
 // }
 
-import { Database } from "../infrastructure/database";
+import { Database } from "../Infra/database";
 
 export class Model<T> {
     constructor(
