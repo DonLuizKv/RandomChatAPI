@@ -8,18 +8,18 @@ export abstract class Repository<T extends object> {
     ) { }
 
     async Find(id: number | string): Promise<T | null> {
-        const result = await this.database.query(
+        const { rowCount, rows } = await this.database.query(
             `SELECT * FROM ${this.table} WHERE id = $1 LIMIT 1`,
             [id]
         );
-        return result.rowCount ? (result.rows[0] as T) : null;
+        return rowCount ? (rows[0] as T) : null;
     }
 
     async FindAll(): Promise<T[]> {
-        const result = await this.database.query(
+        const { rows } = await this.database.query(
             `SELECT * FROM ${this.table}`
         );
-        return result.rows as T[];
+        return rows as T[];
     }
 
     async Insert(data: Partial<T>): Promise<void> {
