@@ -4,9 +4,9 @@ import dotenv from "dotenv"
 import http from "http";
 import path from "path";
 import cookieParser from "cookie-parser";
-import authRoutes from "./app/Presentation/http/routes/auth.routes";
-import { Authenticate } from "./app/Presentation/http/middlewares/auth.middleware";
-import userRoutes from "./app/Presentation/http/routes/user.routes";
+import authRoutes from "./Presentation/http/routes/auth.routes";
+import { Authenticate } from "./Presentation/http/middlewares/auth.middleware";
+import userRoutes from "./Presentation/http/routes/user.routes";
 import Logger from "./lib/Logger";
 import { WebSocketServer } from "./infrastructure/WebSocketServer";
 

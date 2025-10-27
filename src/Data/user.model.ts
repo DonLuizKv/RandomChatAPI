@@ -1,4 +1,4 @@
-import { Model } from "./Repository"
+import { Model } from "./Model"
 
 type user = {
 
