@@ -18,9 +18,13 @@
     <main>
         <h1>Welcome to Random Chat</h1>
 
-        <p>my token: <span id="token"></span></p>
-        <button id="login">login</button>
-
+        <form action="/stats" enctype="multipart/form-data" method="post">
+            <div class="form-group">
+                <input type="file" class="form-control-file" name="uploaded_file">
+                <input type="text" class="form-control" placeholder="Number of speakers" name="nspeakers">
+                <input type="submit" value="Get me the stats!" class="btn btn-default">
+            </div>
+        </form>
     </main>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -28,7 +32,7 @@
         const login = document.getElementById('login');
         const tokenSpan = document.getElementById('token');
 
-        const auth = fetch('/auth', {
+        const auth = fetch('/upload', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

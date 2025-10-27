@@ -40,10 +40,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(Logger.httpMiddleware())
 
-
 // Routes
 app.use("/auth", authRoutes);
-app.use("/user", Authenticate, userRoutes);
+app.use("/user", userRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.get('/', (req, res) => {
