@@ -1,7 +1,7 @@
-import { UserModel } from "../../Data/user.model";
-import { User } from "../../../domain/types/User";
-import { CreateID } from "../../../utils/General";
-import { Hash } from "../../../utils/Password";
+import { UserModel } from "../Data/user.model";
+import { User } from "../../domain/types/User";
+import { CreateID } from "../../utils/General";
+import { Hash } from "../../utils/Password";
 
 export class UserService {
     constructor(
