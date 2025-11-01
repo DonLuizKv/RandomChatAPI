@@ -48,7 +48,5 @@ app.get('/', (req, res) => {
 });
 
 server.listen(PORT, () => {
-    Logger.info(`Server is running on port ${PORT}`, {
-        prefix: "\n"
-    })
+    Logger.info(`Server is running on port ${PORT}`)
 });

@@ -1,6 +1,7 @@
 import { Server as HTTPServer } from 'http';
 import { Server } from 'socket.io';
 import { Event } from '../Presentation/websocket/Events';
+import Logger from '../lib/Logger';
 
 export type UserSocket = {
     userId: string;
@@ -18,7 +19,7 @@ export class WebSocketServer {
 
             // habilitar CORS según tu frontend
             cors: {
-                origin: "*",
+                origin: process.env.ORIGINS,
                 methods: ["GET", "POST"],
             },
 
@@ -27,13 +28,18 @@ export class WebSocketServer {
         });
     }
 
+    getActiveUsers(): UserSocket[] {
+        return Array.from(this.ActiveUsers.entries()).map(([userId, socketId]) => ({ userId, socketId }));
+    }
+
     initialize() {
+        Logger.info("WebSocket Server is running");
         this.io.on('connection', (socket) => {
-            console.log(`Client connected: ${socket.id}`);
+            Logger.socket(`Client connected: ${socket.id}`);
 
             socket.on('register', (userId) => {
                 this.ActiveUsers.set(userId, socket.id);
-                console.log(`User registered: ${userId}`);
+                Logger.socket(`User registered: ${userId}`);
             });
 
             const events = new Event(this.io, socket, this.getActiveUsers());
@@ -43,15 +49,11 @@ export class WebSocketServer {
                 this.ActiveUsers.forEach((value, key) => {
                     if (value === socket.id) {
                         this.ActiveUsers.delete(key);
-                        console.log(`User disconnected: ${key}`);
+                        Logger.socket(`User disconnected: ${key}`);
                     }
                 });
             });
         });
-    }
-
-    getActiveUsers(): UserSocket[] {
-        return Array.from(this.ActiveUsers.entries()).map(([userId, socketId]) => ({ userId, socketId }));
     }
 
 }
