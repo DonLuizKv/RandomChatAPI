@@ -44,6 +44,7 @@ export class Event {
         this.socket.on("chat:message", (data: Package[]) => this.Dispatcher(data, "chat:message"));
         this.socket.on("chat:message:send", (data: Package[]) => this.Dispatcher(data, "chat:message"));
         this.socket.on("chat:message:send", (data: Package[]) => this.Dispatcher(data, "chat:message"));
+        this.socket.on("user:chat:message:send", (data: any) => console.log(data));
     }
 
     init() {

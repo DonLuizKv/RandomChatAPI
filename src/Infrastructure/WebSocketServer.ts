@@ -19,7 +19,7 @@ export class WebSocketServer {
 
             // habilitar CORS según tu frontend
             cors: {
-                origin: process.env.ORIGINS,
+                origin: "*",
                 methods: ["GET", "POST"],
             },
 
