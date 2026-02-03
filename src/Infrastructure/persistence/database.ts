@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { Pool, QueryResult } from "pg";
-import Logger from "../lib/Logger";
+import Logger from "../logger/Logger";
+import { Env } from "../../config/env";
 
 dotenv.config();
 
@@ -9,14 +10,13 @@ export class Database {
     private pool: Pool;
 
     private constructor() {
-        this.validateEnvironmentVariables();
 
         this.pool = new Pool({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            database: process.env.DB_NAME,
-            port: Number(process.env.DB_PORT),
+            host: Env.database.HOST,
+            user: Env.database.USER,
+            password: Env.database.PASSWORD,
+            database: Env.database.NAME,
+            port: Env.database.PORT,
             max: 20,
             idleTimeoutMillis: 30000,
             connectionTimeoutMillis: 2000,
@@ -30,15 +30,6 @@ export class Database {
             this.instance = new Database();
         }
         return this.instance;
-    }
-
-    private validateEnvironmentVariables(): void {
-        const required = ["DB_HOST", "DB_USER", "DB_PASS", "DB_NAME", "DB_PORT"];
-        const missing = required.filter((env) => !process.env[env]);
-
-        if (missing.length > 0) {
-            Logger.error(`Missing required environment variables: ${missing.join(", ")}`);
-        }
     }
 
     // private setupPoolEvents(): void {
