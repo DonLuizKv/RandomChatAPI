@@ -1,16 +1,12 @@
-import dotenv from "dotenv";
 import { Pool, QueryResult } from "pg";
 import Logger from "../logger/Logger";
-import { Env } from "../../config/env";
+import { Env } from "../../../config/env";
 
-dotenv.config();
-
-export class Database {
-    private static instance: Database;
+export class DatabaseClient {
+    private static instance: DatabaseClient;
     private pool: Pool;
 
     private constructor() {
-
         this.pool = new Pool({
             host: Env.database.HOST,
             user: Env.database.USER,
@@ -25,9 +21,9 @@ export class Database {
         // this.setupPoolEvents();
     }
 
-    public static getInstance(): Database {
+    public static getInstance(): DatabaseClient {
         if (!this.instance) {
-            this.instance = new Database();
+            this.instance = new DatabaseClient();
         }
         return this.instance;
     }
@@ -93,7 +89,7 @@ export class Database {
     //     }
     // }
 
-    async initialize(): Promise<void> {
+    async connect(): Promise<void> {
         try {
             const client = await this.pool.connect();
             Logger.database(`Connected to the ${process.env.DB_NAME} database`, {
@@ -109,7 +105,7 @@ export class Database {
     async close(): Promise<void> {
         try {
             await this.pool.end();
-            Logger.database("Database connections closed");
+            Logger.database("DatabaseClient connections closed");
         } catch (error) {
             Logger.error(error as Error);
         }

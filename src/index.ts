@@ -1,52 +1,21 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv"
-import http from "http";
-import path from "path";
-import cookieParser from "cookie-parser";
-import authRoutes from "./Presentation/http/routes/auth.routes";
-import userRoutes from "./Presentation/http/routes/user.routes";
-import Logger from "./lib/Logger";
-import { WebSocketServer } from "./Infrastructure/WebSocketServer";
+import { Env } from "./config/env";
+import { HttpServer } from "./shared/infrastructure/express/express";
+import { DatabaseClient } from "./shared/infrastructure/persistence/DatabaseClient";
 
-// env
-dotenv.config();
-const PORT = process.env.PORT || 5000;
-const ORIGINS = process.env.ORIGINS?.split(",") || [];
+async function Init() {
+    const db = DatabaseClient.getInstance();
+    await db.connect();
+    // const redis = await RedisClient.connect();
 
-// Server
-const app = express();
-const server = http.createServer(app);
-// const DataBase = DBConnection.getInstance();
-const webSocketServer = new WebSocketServer(server);
+    // B. Inicializar Módulos (Inyección de dependencias manual)
+    // UsersModule.init(db, server.api);
+    // ProductsModule.init(db, server.api);
+    // OrdersModule.init(db, server.api);
 
-// configs
-const CorsOptions = {
-    origin: ORIGINS,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-};
+    const server = HttpServer.getInstance();
 
-// Libs
-webSocketServer.initialize();
-// DataBase.initialize();
+    // C. Encender motores
+    server.start(Env.global.PORT);
+}
 
-// Middleware
-app.use(cors(CorsOptions));
-app.use(express.json());
-app.use(cookieParser());
-app.use(Logger.httpMiddleware())
-
-// Routes
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-
-app.use(express.static(path.join(__dirname, '../public')));
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-server.listen(PORT, () => {
-    Logger.info(`Server is running on port ${PORT}`)
-});
+Init();

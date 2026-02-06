@@ -1,6 +1,6 @@
-import { User } from "./user.entity";
+import { User } from "../../users/domain/User.entity";
 
-export interface UserRepository {
+export interface UserGateway {
     save(user: User): Promise<void>;
     update(user: User): Promise<void>;
     delete(user: User): Promise<void>;
