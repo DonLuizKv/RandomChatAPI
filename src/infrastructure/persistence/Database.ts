@@ -1,12 +1,11 @@
 import { Pool, QueryResult } from "pg";
 import Logger from "../logger/Logger";
-import { Env } from "../../../config/env";
+import { Env } from "../../config/env";
 
-export class DatabaseClient {
-    private static instance: DatabaseClient;
+export class Database {
     private pool: Pool;
 
-    private constructor() {
+    constructor() {
         this.pool = new Pool({
             host: Env.database.HOST,
             user: Env.database.USER,
@@ -19,13 +18,6 @@ export class DatabaseClient {
         });
 
         // this.setupPoolEvents();
-    }
-
-    public static getInstance(): DatabaseClient {
-        if (!this.instance) {
-            this.instance = new DatabaseClient();
-        }
-        return this.instance;
     }
 
     // private setupPoolEvents(): void {
@@ -105,7 +97,7 @@ export class DatabaseClient {
     async close(): Promise<void> {
         try {
             await this.pool.end();
-            Logger.database("DatabaseClient connections closed");
+            Logger.database("Database connections closed");
         } catch (error) {
             Logger.error(error as Error);
         }
